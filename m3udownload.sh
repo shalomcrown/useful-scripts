@@ -28,6 +28,8 @@ M3U_BASE=$(dirname $1)
 echo -e "${clr_green}Download M3U file ${M3U_FILE}${clr_end}"
 wget $1 || exit $?
 
+tr -d '\r' < ${M3U_FILE} > ${M3U_FILE}.unx 
+
 while read i 
 do
 	[[ $i == '#'* ]] && continue 
@@ -38,6 +40,6 @@ do
 
 	wget ${MUSIC_URL}
 
-done < $M3U_FILE
+done < ${M3U_FILE}.unx
 
 
