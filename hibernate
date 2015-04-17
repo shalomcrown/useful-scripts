@@ -1,0 +1,10 @@
+#!/bin/bash
+
+	echo -n disk > /sys/power/state
+
+
+#dbus-send --system --print-reply \
+#    --dest="org.freedesktop.UPower" \
+#    /org/freedesktop/UPower \
+#    org.freedesktop.UPower.Hibernate
+
