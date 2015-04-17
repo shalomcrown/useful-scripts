@@ -1,0 +1,42 @@
+#!/bin/bash
+######################################################
+#
+# Another script to copy pictures from camera.
+#
+# Parameter is top level mount directory of camera
+# Defaults to /media/disk
+#
+# Under that, looks for folders 'dcim'or 'mp_root'
+# Copies all files from those, splitting them up into monthly 
+#  folders of type '2009-03 (Mar)'
+#
+# Since some cameras have FAT file systems, which aren't case sensitive, 
+# all file names are changed to lower case.
+#
+# Destination folder id ${HOME}/Pictures/...
+#
+######################################################
+
+
+if [ -z "${1}" ] ; then srcdir=/media/disk ; else srcdir="${1}" ; fi
+
+
+
+srcdirs=`find "${srcdir}" -maxdepth 2 -iwholename "**/dcim/*" -or -iwholename "**/mp_root/*"`
+dest="${HOME}/Pictures/"
+
+for src in $srcdirs ; do
+
+	find "${src}" -type f -print  | while read fl 
+	do
+	   
+	   destSof=`date -r "${fl}" +"%Y-%m (%b)"`
+	
+	   mkdir -p "${dest}${destSof}"
+	   
+	   outname=`basename "${fl}" | tr  '[:upper:]' '[:lower:]'`
+	   
+	   cp -uvpn "${fl}" "${dest}${destSof}/${outname}"
+	
+	done
+done
